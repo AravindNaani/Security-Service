@@ -4,6 +4,7 @@ import com.ecom.Security_Service.constants.Constants;
 import com.ecom.Security_Service.dto.ApiResponse;
 import com.ecom.Security_Service.dto.JwtResponse;
 import com.ecom.Security_Service.dto.LoginRequest;
+import com.ecom.Security_Service.dto.PasswordRequest;
 import com.ecom.Security_Service.service.IPasswordService;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +25,9 @@ public class PasswordController {
     private IPasswordService passwordService;
 
     @PostMapping("/hash-password")
-    public ResponseEntity<ApiResponse> hashPassword(@NotNull String password){
+    public ResponseEntity<ApiResponse> hashPassword(@RequestBody @NotNull PasswordRequest password){
 
-        String hassedPassword = passwordService.hashPassword(password);
+        String hassedPassword = passwordService.hashPassword(password.getPassword());
         return ResponseEntity.ok(new ApiResponse(Constants.successful, LocalDateTime.now(),hassedPassword));
     }
 
