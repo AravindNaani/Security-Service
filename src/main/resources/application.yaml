@@ -2,9 +2,8 @@ spring:
   application:
     name: "SecurityService"
 
-    profiles:
-      active: "dev""
+  profiles:
+    active: "dev"
 
-    config:
-      import:
-        - "optional:classpath:http://localhost:8091/Config-Server"
+  config:
+    import: "optional:configserver:http://localhost:8091/ConfigServer"

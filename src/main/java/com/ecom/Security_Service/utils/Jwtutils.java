@@ -22,7 +22,7 @@ public class Jwtutils {
     public String generateToken(LoginRequest loginRequest){
 
         Map<String, Object> roleMap = new HashMap<>();
-        roleMap.put("roles",loginRequest.getRoles().getFirst());
+        roleMap.put("roles",loginRequest.getRoles());
 
         Date now = new Date();
         Date expiryTime = new Date(now.getTime() + jwtConfig.getExpirationMs());
