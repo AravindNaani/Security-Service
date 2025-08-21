@@ -6,7 +6,4 @@ spring:
     active: "dev"
 
   config:
-    import: "optional:configserver:http://localhost:8091/ConfigServer"
-
-server:
-  port: 8090
+    import: "optional:configserver:http://localhost:8091"
