@@ -7,3 +7,15 @@ spring:
 
   config:
     import: "optional:configserver:http://localhost:8091"
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/securitydb
+    username: postgres
+    password: root
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    format-sql: true

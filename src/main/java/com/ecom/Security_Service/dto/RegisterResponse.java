@@ -2,12 +2,14 @@ package com.ecom.Security_Service.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-public class JwtValidationResponse {
+@NoArgsConstructor
+public class RegisterResponse {
 
-    private boolean valid;
-    private String error;
     private String message;
+    private String username;
+    private String email;
 }

@@ -21,4 +21,26 @@ public class GlobalExceptionHandler{
         );
         return new ResponseEntity<>(errorResponse,HttpStatus.FORBIDDEN);
     }
+
+    @ExceptionHandler(ResourceAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> ResourceAlreadyExistsException(ResourceAlreadyExistsException ex){
+        ErrorResponse errorResponse = new ErrorResponse(
+                ex.getMessage(),
+                "Try another Username",
+                LocalDateTime.now(),
+                HttpStatus.CONFLICT.value()
+        );
+        return new ResponseEntity<>(errorResponse,HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponse> ResourceNotFoundException(ResourceNotFoundException ex){
+        ErrorResponse errorResponse = new ErrorResponse(
+                ex.getMessage(),
+                "Resource Not Found",
+                LocalDateTime.now(),
+                HttpStatus.NOT_FOUND.value()
+        );
+        return new ResponseEntity<>(errorResponse,HttpStatus.NOT_FOUND);
+    }
 }
