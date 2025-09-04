@@ -43,4 +43,26 @@ public class GlobalExceptionHandler{
         );
         return new ResponseEntity<>(errorResponse,HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(TokenRefreshException.class)
+    public ResponseEntity<ErrorResponse> TokenRefreshException(TokenRefreshException ex){
+        ErrorResponse errorResponse = new ErrorResponse(
+                ex.getMessage(),
+                "Token Expired",
+                LocalDateTime.now(),
+                HttpStatus.FORBIDDEN.value()
+        );
+        return new ResponseEntity<>(errorResponse,HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(AccountLockedException.class)
+    public ResponseEntity<ErrorResponse> AccountLockedException(AccountLockedException ex){
+        ErrorResponse errorResponse = new ErrorResponse(
+                ex.getMessage(),
+                "Account Locked",
+                LocalDateTime.now(),
+                HttpStatus.LOCKED.value()
+        );
+        return new ResponseEntity<>(errorResponse,HttpStatus.LOCKED);
+    }
 }
