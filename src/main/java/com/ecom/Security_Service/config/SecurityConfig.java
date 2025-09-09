@@ -28,7 +28,7 @@ public class SecurityConfig {
                 // Authorize requests
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/actuator/**").permitAll() // allow health checks
-                        .requestMatchers("/api/v1/auth/register", "/api/v1/auth/login", "/api/v1/auth/refresh-token", "/api/v1/auth/forgot-password")
+                        .requestMatchers("/api/v1/auth/register", "/api/v1/auth/login", "/api/v1/auth/refresh-token", "/api/v1/auth/forget-password", "/api/v1/auth/reset-password")
                         .permitAll()
                         .anyRequest().authenticated() // everything else requires authentication
                 )

@@ -19,6 +19,7 @@ import com.ecom.Security_Service.repo.UserRepository;
 import com.ecom.Security_Service.service.AuthService;
 import com.ecom.Security_Service.utils.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
@@ -75,7 +76,7 @@ public class AuthServiceImpl implements AuthService {
         userRepository.save(user);
         log.info("User registered successfully: {}", user.getUsername());
 
-        return new RegisterResponse("User registered successfully", user.getUsername(), user.getEmail());
+        return new RegisterResponse("User registered successfully", user.getUsername(), user.getEmail(), user.getId());
     }
 
     @Override
@@ -116,6 +117,7 @@ public class AuthServiceImpl implements AuthService {
         return new JwtResponse(token, refreshToken.getRefreshToken());
     }
 
+    @Transactional
     @Override
     public String forgotPassword(String email) {
         User user = userRepository.findByEmail(email)
@@ -132,6 +134,7 @@ public class AuthServiceImpl implements AuthService {
         return "http://localhost:8092/ecom/securityservice/api/v1/auth/reset-password?token=" + token.getToken(); // return reset link
     }
 
+    @Transactional
     @Override
     public void resetPassword(String token, String newPassword) {
         PasswordResetToken resetToken = passwordResetTokenRepository.findByToken(token)

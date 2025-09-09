@@ -6,6 +6,7 @@ import com.ecom.Security_Service.entity.Role;
 import com.ecom.Security_Service.entity.User;
 import com.ecom.Security_Service.exception.ResourceNotFoundException;
 import com.ecom.Security_Service.exception.TokenRefreshException;
+import com.ecom.Security_Service.publisher.EventPublisher;
 import com.ecom.Security_Service.repo.UserRepository;
 import com.ecom.Security_Service.service.AuthService;
 import com.ecom.Security_Service.utils.JwtUtil;
@@ -17,6 +18,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -29,9 +32,18 @@ public class AuthController {
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Autowired
+    private EventPublisher eventPublisher;
+
     @PostMapping("/register")
     public ResponseEntity<RegisterResponse> registerUser(@RequestBody RegisterRequest request) {
         RegisterResponse registerResponse = authService.registerUser(request);
+        Map<String, Object> event = new HashMap<>();
+        event.put("userId", registerResponse.getUserId());
+        event.put("email", registerResponse.getEmail());
+        event.put("username", registerResponse.getUsername());
+
+        eventPublisher.publish("user.registered", event);
         return ResponseEntity.created(null).body(registerResponse);
     }
 
@@ -82,6 +94,12 @@ public class AuthController {
         String resetLink = authService.forgotPassword(request.getEmail());
 
         // call notification service to send the reset link to user's email
+        Map<String, Object> event = new HashMap<>();
+        event.put("email", request.getEmail());
+        event.put("resetUrl", resetLink);
+        event.put("userName", "User");
+
+        eventPublisher.publish("auth.password.reset.requested", event);
 
         return ResponseEntity.ok("Password reset link sent to your email");
 
